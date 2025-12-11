@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFPI Aulas - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .container {
+            background: white;
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 440px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(17, 153, 142, 0.3);
+            animation: bounce 2s infinite;
+            overflow: hidden;
+            padding: 15px;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: #f7fafc;
+            padding: 6px;
+            border-radius: 15px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #718096;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .tab:hover:not(.active) {
+            background: #e2e8f0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+            width: 18px;
+            height: 18px;
+        }
+
+        .input-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: #a0aec0;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px 14px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+        }
+
+        input::placeholder {
+            color: #cbd5e0;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.3);
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.4);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <div class="logo">
+                <img src="IFPI.png" alt="IFPI">
+            </div>
+            <h1>IFPI Aulas</h1>
+            <p class="subtitle">Sistema de Gerenciamento Educacional</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="setTab(this, 'aluno')">Aluno</button>
+            <button class="tab" onclick="setTab(this, 'professor')">Professor</button>
+        </div>
+
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="usuario">Usuário</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </span>
+                    <input type="text" id="usuario" placeholder="Digite seu usuário" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                        </svg>
+                    </span>
+                    <input type="password" id="senha" placeholder="Digite sua senha" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+    </div>
+
+    <script>
+        let currentTab = 'aluno';
+
+        function setTab(button, tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            button.classList.add('active');
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const usuario = document.getElementById('usuario').value;
+            const senha = document.getElementById('senha').value;
+            
+            // Animação de sucesso
+            const btn = event.target.querySelector('.btn-login');
+            btn.textContent = 'Entrando...';
+            btn.style.background = 'linear-gradient(135deg, #38ef7d 0%, #11998e 100%)';
+            
+            setTimeout(() => {
+                alert(`Bem-vindo(a), ${usuario}!\nTipo de acesso: ${currentTab}`);
+                btn.textContent = 'Entrar';
+                btn.style.background = 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

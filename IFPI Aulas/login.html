@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IFPI Aulas - Login</title>
+    <script src="api.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-y: auto;
+        }
+          .bg {
+              position: fixed;
+              top: 50%;
+              left: 50%;
+              width: 120vw;              
+              height: 120vh;
+              transform: translate(-50%, -45%);
+              object-fit: contain;      
+              object-position: center top; 
+}
+
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.05);
+            z-index: 0;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 440px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            animation: slideIn 0.6s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4);
+            animation: pulse 3s ease-in-out infinite;
+            overflow: hidden;
+            padding: 15px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: translateY(0) scale(1);
+                box-shadow: 0 10px 30px rgba(17, 153, 142, 0.4);
+            }
+            50% { 
+                transform: translateY(-5px) scale(1.05);
+                box-shadow: 0 15px 40px rgba(17, 153, 142, 0.6);
+            }
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        h1 {
+            color: #2d3748;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: #f7fafc;
+            padding: 6px;
+            border-radius: 15px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: #718096;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .tab:hover:not(.active) {
+            background: #e2e8f0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #4a5568;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+            width: 18px;
+            height: 18px;
+            z-index: 1;
+        }
+
+        .input-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: #a0aec0;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #a0aec0;
+            width: 20px;
+            height: 20px;
+            transition: color 0.3s ease;
+            z-index: 1;
+        }
+
+        .toggle-password:hover {
+            color: #11998e;
+        }
+
+        .toggle-password svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 45px 14px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+            background: white;
+        }
+
+        input:focus {
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input::placeholder {
+            color: #cbd5e0;
+        }
+
+        /* Custom Select Styles */
+        .custom-select {
+            position: relative;
+            width: 100%;
+        }
+
+        .custom-select-trigger {
+            width: 100%;
+            padding: 12px 40px 12px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            outline: none;
+            background: white;
+            cursor: pointer;
+            color: #2d3748;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            user-select: none;
+        }
+
+        .custom-select-trigger.placeholder {
+            color: #a0aec0;
+            font-style: italic;
+        }
+
+        .custom-select-trigger:hover {
+            border-color: #11998e;
+            background-color: #f7fafc;
+        }
+
+        .custom-select.open .custom-select-trigger {
+            border-color: #11998e;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .custom-select-arrow {
+            width: 18px;
+            height: 18px;
+            transition: transform 0.3s ease;
+        }
+
+        .custom-select-arrow svg {
+            width: 100%;
+            height: 100%;
+            stroke: #11998e;
+            stroke-width: 2.5;
+        }
+
+        .custom-select.open .custom-select-arrow {
+            transform: rotate(180deg);
+        }
+
+        .custom-select-options {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            z-index: 100;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .custom-select.open .custom-select-options {
+            display: block;
+        }
+
+        .custom-select-option {
+            padding: 12px 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2d3748;
+            border-left: 3px solid transparent;
+        }
+
+        .custom-select-option:hover {
+            background: linear-gradient(90deg, #e6fffa 0%, #f7fafc 100%);
+            color: #11998e;
+            border-left-color: #11998e;
+        }
+
+        .custom-select-option.selected {
+            background: linear-gradient(90deg, #e6fffa 0%, #d4f8f0 100%);
+            color: #11998e;
+            font-weight: 600;
+            border-left-color: #11998e;
+        }
+
+        .custom-select-option.placeholder-option {
+            color: #a0aec0;
+            font-style: italic;
+        }
+
+        .professor-fields {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .professor-fields.active {
+            display: block;
+        }
+
+        .fields-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(17, 153, 142, 0.5);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 30px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .fields-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+     <img src="IFPI2.png" alt="Fundo IFPI" class="bg">
+  
+    <div class="container">
+        <div class="logo-container">
+            <div class="logo">
+                <img src="IFPI.png" alt="IFPI">
+            </div>
+            <h1>IFPI Aulas</h1>
+            <p class="subtitle">Sistema de Gerenciamento Educacional</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="setTab(this, 'aluno')">Aluno</button>
+            <button class="tab" onclick="setTab(this, 'professor')">Professor</button>
+        </div>
+
+        <form onsubmit="handleLogin(event)">
+            <div class="form-group">
+                <label for="usuario">Matrícula</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </span>
+                    <input type="text" id="usuario" placeholder="Digite sua matrícula" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Senha</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                        </svg>
+                    </span>
+                    <input type="password" id="senha" placeholder="Digite sua senha" required>
+                    <span class="toggle-password" onclick="togglePassword()">
+                        <svg id="eyeIcon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                        </svg>
+                    </span>
+                </div>
+            </div>
+
+            <div class="professor-fields" id="professorFields">
+                <div class="fields-row">
+                    <div class="form-group">
+                        <label for="curso">Curso</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82zM12 3L1 9l11 6 9-4.91V17h2V9L12 3z"/>
+                                </svg>
+                            </span>
+                            <div class="custom-select" id="cursoSelect">
+                                <div class="custom-select-trigger placeholder">
+                                    <span>Selecione</span>
+                                    <div class="custom-select-arrow">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <polyline points="6 9 12 15 18 9" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="custom-select-options">
+                                    <div class="custom-select-option placeholder-option" data-value="">Selecione</div>
+                                    <div class="custom-select-option" data-value="informatica">Informática</div>
+                                    <div class="custom-select-option" data-value="meioambiente">M. Ambiente</div>
+                                    <div class="custom-select-option" data-value="administracao">Administração</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="serie">Série</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                                </svg>
+                            </span>
+                            <div class="custom-select" id="serieSelect">
+                                <div class="custom-select-trigger placeholder">
+                                    <span>Selecione</span>
+                                    <div class="custom-select-arrow">
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <polyline points="6 9 12 15 18 9" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="custom-select-options">
+                                    <div class="custom-select-option placeholder-option" data-value="">Selecione</div>
+                                    <div class="custom-select-option" data-value="1">1º Ano</div>
+                                    <div class="custom-select-option" data-value="2">2º Ano</div>
+                                    <div class="custom-select-option" data-value="3">3º Ano</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+    </div>
+
+    <script>
+        let currentTab = 'aluno';
+        let selectedCurso = '';
+        let selectedSerie = '';
+
+        // Base de dados de professores - usando matrículas
+        const teachersDatabase = {
+            '202412345': {
+                name: 'Prof. Gilson',
+                subjects: ['matematica']
+            },
+            '202412346': {
+                name: 'Profa. Lily',
+                subjects: ['portugues']
+            },
+            '202412347': {
+                name: 'Prof. William',
+                subjects: ['fisica']
+            },
+            '202412348': {
+                name: 'Prof. Renato',
+                subjects: ['quimica']
+            },
+            '202412349': {
+                name: 'Prof. Rafael',
+                subjects: ['biologia']
+            },
+            '202412350': {
+                name: 'Profa. Patrícia',
+                subjects: ['historia']
+            },
+            '202412351': {
+                name: 'Prof. Neto',
+                subjects: ['geografia']
+            },
+            '202412352': {
+                name: 'Profa. Lucy',
+                subjects: ['ingles']
+            },
+            '202412353': {
+                name: 'Prof. Cleomir',
+                subjects: ['espanhol']
+            },
+            '202412354': {
+                name: 'Profa. Jotinha',
+                subjects: ['filosofia']
+            },
+            '202412355': {
+                name: 'Profa. Millene',
+                subjects: ['sociologia']
+            },
+            '202412356': {
+                name: 'Prof. Cibely',
+                subjects: ['educacao-fisica']
+            }
+        };
+
+        // Custom Select Logic
+        function initCustomSelect(selectId) {
+            const customSelect = document.getElementById(selectId);
+            const trigger = customSelect.querySelector('.custom-select-trigger');
+            const options = customSelect.querySelectorAll('.custom-select-option');
+
+            trigger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                document.querySelectorAll('.custom-select').forEach(s => {
+                    if (s !== customSelect) s.classList.remove('open');
+                });
+                customSelect.classList.toggle('open');
+            });
+
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    const text = this.textContent;
+                    
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    
+                    if (value !== '') {
+                        this.classList.add('selected');
+                        trigger.classList.remove('placeholder');
+                        trigger.querySelector('span').textContent = text;
+                        
+                        if (selectId === 'cursoSelect') {
+                            selectedCurso = value;
+                        } else if (selectId === 'serieSelect') {
+                            selectedSerie = value;
+                        }
+                    } else {
+                        trigger.classList.add('placeholder');
+                        trigger.querySelector('span').textContent = 'Selecione';
+                        if (selectId === 'cursoSelect') {
+                            selectedCurso = '';
+                        } else if (selectId === 'serieSelect') {
+                            selectedSerie = '';
+                        }
+                    }
+                    
+                    customSelect.classList.remove('open');
+                });
+            });
+        }
+
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.custom-select').forEach(select => {
+                select.classList.remove('open');
+            });
+        });
+
+        initCustomSelect('cursoSelect');
+        initCustomSelect('serieSelect');
+
+        function setTab(button, tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            button.classList.add('active');
+            
+            const professorFields = document.getElementById('professorFields');
+            
+            if (tab === 'professor') {
+                professorFields.classList.add('active');
+            } else {
+                professorFields.classList.remove('active');
+            }
+        }
+
+        function togglePassword() {
+            const senhaInput = document.getElementById('senha');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            if (senhaInput.type === 'password') {
+                senhaInput.type = 'text';
+                eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>';
+            } else {
+                senhaInput.type = 'password';
+                eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+            }
+        }
+
+       async function handleLogin(event) {
+    event.preventDefault();
+    
+    const usuario = document.getElementById('usuario').value.trim();
+    const senha = document.getElementById('senha').value;
+    const btn = event.target.querySelector('.btn-login');
+    
+    // Salva texto original do botão
+    const originalText = btn.textContent;
+    btn.textContent = '⏳ Entrando...';
+    btn.disabled = true;
+    
+    try {
+        if (currentTab === 'professor') {
+            // Valida campos obrigatórios
+            if (!selectedCurso || !selectedSerie) {
+                alert('Por favor, selecione o curso e a série!');
+                btn.textContent = originalText;
+                btn.disabled = false;
+                return;
+            }
+            
+            // Chama a API de login
+            const resultado = await login(usuario, senha, 'professor', selectedCurso, selectedSerie);
+            
+            // Animação de sucesso
+            btn.textContent = '✓ Entrando...';
+            btn.style.background = 'linear-gradient(135deg, #38ef7d 0%, #11998e 100%)';
+            
+            setTimeout(() => {
+                window.location.href = 'paineldoprofessor.html';
+            }, 1000);
+            
+        } else {
+            // Login de aluno
+            const resultado = await login(usuario, senha, 'aluno');
+            
+            // Animação de sucesso
+            btn.textContent = '✓ Entrando...';
+            btn.style.background = 'linear-gradient(135deg, #38ef7d 0%, #11998e 100%)';
+            
+            setTimeout(() => {
+                window.location.href = 'paineldoaluno.html';
+            }, 1000);
+        }
+        
+    } catch (error) {
+        // Se der erro, mostra mensagem
+        alert('❌ ' + error.message);
+        btn.textContent = originalText;
+        btn.disabled = false;
+        btn.style.background = '';
+    }
+}
+    </script>
+</body>
+</html>

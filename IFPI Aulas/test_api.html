@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salas de Aula - Instituto Federal</title>
+
+  <style>
+    /* ======== ESTILO GERAL ======== */
+    body {
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      background-color: #f8fff8;
+      color: #333;
+    }
+
+    header {
+      background-color: #006633;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      position: relative;
+      gap: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    header img {
+      height: 50px;
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    header .voltar {
+      position: absolute;
+      left: 5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      display: none;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .sala {
+      background-color: white;
+      border-left: 6px solid #006633;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+
+    .sala:hover {
+      transform: scale(1.03);
+    }
+
+    .conteudo-sala {
+      display: none;
+      padding: 2rem;
+      gap: 2rem;
+    }
+
+    section {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    form {
+      margin-bottom: 1rem;
+    }
+
+    input[type="file"],
+    input[type="url"] {
+      margin: 0.5rem 0;
+      padding: 0.4rem;
+      width: 80%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #006633;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00994d;
+    }
+
+    .lista {
+      list-style: none;
+      padding: 0;
+    }
+
+    .lista li {
+      margin: 0.5rem 0;
+    }
+
+    .lista a {
+      color: #006633;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .lista a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      header img {
+        height: 40px;
+      }
+      header h1 {
+        font-size: 1.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <!--LOGO DO IF-->
+    <img src="" alt="Logo do Instituto Federal">
+    <a href="#" class="voltar" id="voltar">← Voltar</a>
+    <h1 id="titulo">Salas de Aula - Instituto Federal</h1>
+  </header>
+
+  <!-- ======== PÁGINA INICIAL ======== -->
+  <main class="container" id="paginaInicial">
+    <div class="sala" onclick="abrirSala('Matemática')"><h2>Matemática</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Português')"><h2>Português</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('História')"><h2>História</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Geografia')"><h2>Geografia</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Biologia')"><h2>Biologia</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Física')"><h2>Física</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Química')"><h2>Química</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Inglês')"><h2>Inglês</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Artes')"><h2>Artes</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Educação Física')"><h2>Educação Física</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Filosofia')"><h2>Filosofia</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Sociologia')"><h2>Sociologia</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Informática')"><h2>Informática</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Administração')"><h2>Administração</h2><p>Professor: <em>a definir</em></p></div>
+    <div class="sala" onclick="abrirSala('Projeto Integrador')"><h2>Projeto Integrador</h2><p>Professor: <em>a definir</em></p></div>
+  </main>
+
+  <!-- ======== CONTEÚDO DA SALA ======== -->
+  <main class="conteudo-sala" id="paginaSala">
+    <section class="atividade">
+      <h2>📘 Atividades</h2>
+      <form id="formAtividade">
+        <label for="arquivo">Anexar atividade:</label><br>
+        <input type="file" id="arquivo" name="arquivo">
+        <button type="submit">Enviar</button>
+      </form>
+      <ul class="lista" id="listaAtividades"></ul>
+    </section>
+
+    <section class="videos">
+      <h2>🎥 Vídeo-aulas</h2>
+      <form id="formVideo">
+        <label for="link">Adicionar link de vídeo:</label><br>
+        <input type="url" id="link" name="link" placeholder="Cole o link do YouTube">
+        <button type="submit">Adicionar</button>
+      </form>
+      <ul class="lista" id="listaVideos"></ul>
+    </section>
+  </main>
+
+  <!-- ======== SCRIPT ======== -->
+  <script>
+    const paginaInicial = document.getElementById("paginaInicial");
+    const paginaSala = document.getElementById("paginaSala");
+    const titulo = document.getElementById("titulo");
+    const voltar = document.getElementById("voltar");
+    const listaAtividades = document.getElementById("listaAtividades");
+    const listaVideos = document.getElementById("listaVideos");
+
+    function abrirSala(nomeSala) {
+      paginaInicial.style.display = "none";
+      paginaSala.style.display = "block";
+      titulo.textContent = Sala de ${nomeSala};
+      voltar.style.display = "inline";
+    }
+
+    voltar.addEventListener("click", () => {
+      paginaInicial.style.display = "grid";
+      paginaSala.style.display = "none";
+      titulo.textContent = "Salas de Aula - Instituto Federal";
+      voltar.style.display = "none";
+      listaAtividades.innerHTML = "";
+      listaVideos.innerHTML = "";
+    });
+
+    // Adicionar atividade
+    document.getElementById("formAtividade").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const arquivo = document.getElementById("arquivo").files[0];
+      if (arquivo) {
+        const li = document.createElement("li");
+        li.innerHTML = <a href="#">${arquivo.name}</a>;
+        listaAtividades.appendChild(li);
+        document.getElementById("arquivo").value = "";
+      } else {
+        alert("Selecione um arquivo primeiro!");
+      }
+    });
+
+    // Adicionar vídeo
+    document.getElementById("formVideo").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const link = document.getElementById("link").value.trim();
+      if (link) {
+        const li = document.createElement("li");
+        li.innerHTML = <a href="${link}" target="_blank">${link}</a>;
+        listaVideos.appendChild(li);
+        document.getElementById("link").value = "";
+      } else {
+        alert("Cole um link de vídeo!");
+      }
+    });
+  </script>
+</body>
+</html>
